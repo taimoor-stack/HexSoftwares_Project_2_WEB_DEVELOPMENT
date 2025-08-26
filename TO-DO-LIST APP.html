@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List App - HEX SOFTWARES Internship</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .logo-text {
+            font-weight: bold;
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .app-container {
+            padding: 25px;
+        }
+
+        .input-section {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .input-section input {
+            flex: 1;
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: 8px 0 0 8px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-section input:focus {
+            border-color: #6a11cb;
+        }
+
+        .input-section button {
+            padding: 14px 20px;
+            background-color: #6a11cb;
+            color: white;
+            border: none;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .input-section button:hover {
+            background-color: #2575fc;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .filter-buttons button {
+            padding: 8px 15px;
+            background-color: #f1f1f1;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .filter-buttons button.active {
+            background-color: #6a11cb;
+            color: white;
+        }
+
+        .filter-buttons button:hover {
+            background-color: #ddd;
+        }
+
+        .filter-buttons button.active:hover {
+            background-color: #2575fc;
+        }
+
+        .task-list {
+            list-style-type: none;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 12px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s;
+            transition: transform 0.3s;
+        }
+
+        .task-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .task-item.completed {
+            background-color: #e8f5e9;
+            opacity: 0.8;
+        }
+
+        .task-item.completed .task-text {
+            text-decoration: line-through;
+            color: #777;
+        }
+
+        .task-checkbox {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .task-text {
+            flex: 1;
+            font-size: 16px;
+            word-break: break-word;
+        }
+
+        .task-delete {
+            background: none;
+            border: none;
+            color: #f44336;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+            transition: transform 0.3s;
+        }
+
+        .task-delete:hover {
+            transform: scale(1.2);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+        }
+
+        .empty-state img {
+            width: 100px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            color: #777;
+            font-size: 14px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #f5f5f5;
+            color: #777;
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .app-container {
+                padding: 20px;
+            }
+            
+            .input-section {
+                flex-direction: column;
+            }
+            
+            .input-section input {
+                border-radius: 8px;
+                margin-bottom: 10px;
+            }
+            
+            .input-section button {
+                border-radius: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <div class="logo-text">HEX SOFTWARES</div>
+            </div>
+            <h1>To-Do List App</h1>
+            <p>Internship Project - Web Development</p>
+        </div>
+        
+        <div class="app-container">
+            <div class="input-section">
+                <input type="text" id="taskInput" placeholder="Enter a new task...">
+                <button id="addTaskBtn">Add Task</button>
+            </div>
+            
+            <div class="filter-buttons">
+                <button class="active" data-filter="all">All</button>
+                <button data-filter="active">Active</button>
+                <button data-filter="completed">Completed</button>
+            </div>
+            
+            <ul id="taskList" class="task-list">
+                <!-- Tasks will be added here dynamically -->
+            </ul>
+            
+            <div id="emptyState" class="empty-state">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='100' height='100'><path fill='%236a11cb' d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z'/></svg>" alt="No tasks">
+                <h3>No tasks yet</h3>
+                <p>Add a new task to get started!</p>
+            </div>
+            
+            <div class="stats">
+                <span id="totalTasks">Total: 0 tasks</span>
+                <span id="completedTasks">Completed: 0 tasks</span>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Created for HEX SOFTWARES Internship Program | Web Development Task</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const taskInput = document.getElementById('taskInput');
+            const addTaskBtn = document.getElementById('addTaskBtn');
+            const taskList = document.getElementById('taskList');
+            const emptyState = document.getElementById('emptyState');
+            const totalTasksSpan = document.getElementById('totalTasks');
+            const completedTasksSpan = document.getElementById('completedTasks');
+            const filterButtons = document.querySelectorAll('.filter-buttons button');
+            
+            // Current filter
+            let currentFilter = 'all';
+            
+            // Load tasks from localStorage
+            let tasks = JSON.parse(localStorage.getItem('hexSoftwaresTasks')) || [];
+            
+            // Initialize the app
+            renderTasks();
+            updateStats();
+            
+            // Event Listeners
+            addTaskBtn.addEventListener('click', addTask);
+            taskInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addTask();
+                }
+            });
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Update active button
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Set current filter and render tasks
+                    currentFilter = this.getAttribute('data-filter');
+                    renderTasks();
+                });
+            });
+            
+            // Functions
+            function addTask() {
+                const taskText = taskInput.value.trim();
+                
+                if (taskText === '') {
+                    alert('Please enter a task!');
+                    return;
+                }
+                
+                // Create new task object
+                const newTask = {
+                    id: Date.now(),
+                    text: taskText,
+                    completed: false,
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Add to tasks array
+                tasks.push(newTask);
+                
+                // Save to localStorage
+                saveTasks();
+                
+                // Clear input
+                taskInput.value = '';
+                
+                // Render tasks and update stats
+                renderTasks();
+                updateStats();
+            }
+            
+            function deleteTask(id) {
+                tasks = tasks.filter(task => task.id !== id);
+                saveTasks();
+                renderTasks();
+                updateStats();
+            }
+            
+            function toggleTaskCompleted(id) {
+                tasks = tasks.map(task => {
+                    if (task.id === id) {
+                        return {...task, completed: !task.completed};
+                    }
+                    return task;
+                });
+                
+                saveTasks();
+                renderTasks();
+                updateStats();
+            }
+            
+            function saveTasks() {
+                localStorage.setItem('hexSoftwaresTasks', JSON.stringify(tasks));
+            }
+            
+            function renderTasks() {
+                // Clear task list
+                taskList.innerHTML = '';
+                
+                // Filter tasks based on current filter
+                let filteredTasks = tasks;
+                
+                if (currentFilter === 'active') {
+                    filteredTasks = tasks.filter(task => !task.completed);
+                } else if (currentFilter === 'completed') {
+                    filteredTasks = tasks.filter(task => task.completed);
+                }
+                
+                // Show/hide empty state
+                if (filteredTasks.length === 0) {
+                    emptyState.style.display = 'block';
+                } else {
+                    emptyState.style.display = 'none';
+                }
+                
+                // Render tasks
+                filteredTasks.forEach(task => {
+                    const li = document.createElement('li');
+                    li.className = `task-item ${task.completed ? 'completed' : ''}`;
+                    li.setAttribute('data-id', task.id);
+                    
+                    li.innerHTML = `
+                        <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''}>
+                        <span class="task-text">${task.text}</span>
+                        <button class="task-delete">×</button>
+                    `;
+                    
+                    taskList.appendChild(li);
+                    
+                    // Add event listeners to the new elements
+                    li.querySelector('.task-checkbox').addEventListener('change', () => toggleTaskCompleted(task.id));
+                    li.querySelector('.task-delete').addEventListener('click', () => deleteTask(task.id));
+                });
+            }
+            
+            function updateStats() {
+                const totalTasks = tasks.length;
+                const completedTasks = tasks.filter(task => task.completed).length;
+                
+                totalTasksSpan.textContent = `Total: ${totalTasks} tasks`;
+                completedTasksSpan.textContent = `Completed: ${completedTasks} tasks`;
+            }
+        });
+    </script>
+</body>
+</html>
